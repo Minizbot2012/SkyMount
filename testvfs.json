@@ -1,0 +1,6 @@
+{
+  "modpaths": ["/tmp/mod1", "/tmp/mod2"],
+  "gameroot": "/tmp/mnt",
+  "work": "/tmp/work",
+  "overwrite": "/tmp/overwrite"
+}
