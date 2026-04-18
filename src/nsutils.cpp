@@ -1,8 +1,12 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
 #include <nsutils.h>
 void NSUtils::update_map(const char *mapping, const char *map_file) {
   int fd = open(map_file, O_WRONLY);
   if (fd < 0) {
-    perror("open map file");
+    std::perror("open map file");
     exit(EXIT_FAILURE);
   }
   if (write(fd, mapping, strlen(mapping)) < 0) {
