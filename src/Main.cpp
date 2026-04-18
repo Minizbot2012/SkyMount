@@ -1,59 +1,19 @@
-#include <cerrno>
-#include <cstdlib>
-#include <iostream>
-#include <ranges>
-#include <rfl/json.hpp>
-#include <sched.h>
-#include <string>
+#include "helpers.h"
+#include "vfs.h"
+#include <rfl/json/load.hpp>
 #include <sys/mount.h>
-#include <sys/wait.h>
+#include <sys/types.h>
 #include <unistd.h>
-#include <vector>
-
-struct VFS {
-  std::vector<std::string> modpaths;
-  std::string gameroot;
-  std::string overwrite;
-  std::string work;
-};
-
-void update_map(const char *mapping, const char *map_file) {
-  int fd = open(map_file, O_WRONLY);
-  if (fd < 0) {
-    perror("open map file");
-    exit(EXIT_FAILURE);
-  }
-  if (write(fd, mapping, strlen(mapping)) < 0) {
-    perror("write map file");
-    exit(EXIT_FAILURE);
-  }
-  close(fd);
-}
-
+#include <ranges>
 int main(int argc, char *argv[]) {
-  uid_t uid = getuid();
-  gid_t gid = getgid();
   if (argc < 2) {
     std::cout << "Usage: " << argv[0] << " <VFS JSON file>" << std::endl;
     return 1;
   }
+  uid_t uid = getuid();
+  gid_t gid = getgid();
   if (argc > 2 && getuid() != 0 && getgid() != 0) {
-    if (unshare(CLONE_NEWNS | CLONE_NEWUSER) != 0) {
-      std::cout << "Error creating child NS" << std::endl;
-      return 1;
-    }
-    if (fork() != 0) {
-      wait(NULL);
-      exit(EXIT_SUCCESS);
-    } else {
-      update_map("deny", "/proc/self/setgroups");
-      char map_buf[100];
-      snprintf(map_buf, sizeof(map_buf), "0 %d 1", uid);
-      update_map(map_buf, "/proc/self/uid_map");
-
-      snprintf(map_buf, sizeof(map_buf), "0 %d 1", gid);
-      update_map(map_buf, "/proc/self/gid_map");
-    }
+      create_namespace();
   }
   if (getuid() != 0 || getgid() != 0) {
     std::cout << "No permission" << std::endl;
