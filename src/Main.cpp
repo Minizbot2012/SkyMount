@@ -46,13 +46,13 @@ int main(int argc, char *argv[]) {
       wait(NULL);
       exit(EXIT_SUCCESS);
     } else {
-        update_map("deny", "/proc/self/setgroups");
-        char map_buf[100];
-        snprintf(map_buf, sizeof(map_buf), "0 %d 1", uid);
-        update_map(map_buf, "/proc/self/uid_map");
+      update_map("deny", "/proc/self/setgroups");
+      char map_buf[100];
+      snprintf(map_buf, sizeof(map_buf), "0 %d 1", uid);
+      update_map(map_buf, "/proc/self/uid_map");
 
-        snprintf(map_buf, sizeof(map_buf), "0 %d 1", gid);
-        update_map(map_buf, "/proc/self/gid_map");
+      snprintf(map_buf, sizeof(map_buf), "0 %d 1", gid);
+      update_map(map_buf, "/proc/self/gid_map");
     }
   }
   if (getuid() != 0 || getgid() != 0) {
@@ -123,9 +123,9 @@ int main(int argc, char *argv[]) {
   }
   move_mount(mntfd, "", AT_FDCWD, vfs.gameroot.c_str(),
              MOVE_MOUNT_F_EMPTY_PATH);
-  if(argc > 2) {
-      execv(argv[2], &argv[2]);
-      exit(EXIT_FAILURE);
+  if (argc > 2) {
+    execv(argv[2], &argv[2]);
+    exit(EXIT_FAILURE);
   }
   exit(EXIT_SUCCESS);
   return 0;
