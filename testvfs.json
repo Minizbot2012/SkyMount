@@ -1,6 +1,6 @@
 {
-  "modpaths": ["/tmp/mod1", "/tmp/mod2"],
-  "gameroot": "/tmp/mnt",
-  "work": "/tmp/work",
-  "overwrite": "/tmp/overwrite"
+  "modpaths": [],
+  "gameroot": "/home/deck/.local/share/Steam/steamapps/common/Skyrim Special Edition/Data",
+  "work": "/home/deck/Games/Bethesda/Data/SSE/work",
+  "overwrite": "/home/deck/Games/Bethesda/Data/SSE/overwrite"
 }
