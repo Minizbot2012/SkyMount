@@ -1,4 +1,4 @@
-#include <helpers.h>
+#include <nsutils.h>
 #include <vfs.h>
 #include <rfl/json/load.hpp>
 #include <sys/mount.h>
@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   uid_t uid = getuid();
   gid_t gid = getgid();
   if (argc > 2 && getuid() != 0 && getgid() != 0) {
-      create_namespace();
+      NSUtils::create_namespace();
   }
   if (getuid() != 0 || getgid() != 0) {
     std::cout << "No permission" << std::endl;
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   auto vfs = res.value();
-  mount_vfs(vfs);
+  vfs.mount();
   if (argc > 2) {
     execv(argv[2], &argv[2]);
     exit(EXIT_FAILURE);

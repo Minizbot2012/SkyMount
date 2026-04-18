@@ -6,6 +6,5 @@ struct VFS {
   std::string gameroot;
   std::string overwrite;
   std::string work;
+  void mount();
 };
-
-void mount_vfs(VFS filesys);

@@ -3,30 +3,30 @@
 #include <iostream>
 #include <ranges>
 #include <sys/mount.h>
-void mount_vfs(VFS filesys) {
+void VFS::mount() {
   int fsfd = fsopen("overlay", 0);
   if (fsfd < 0) {
     std::cout << "Failed to open VFS: " << fsfd << std::endl;
     exit(EXIT_FAILURE);
   }
-  for (const auto &modpath : filesys.modpaths | std::views::reverse) {
+  for (const auto &modpath : this->modpaths | std::views::reverse) {
     if (fsconfig(fsfd, FSCONFIG_SET_STRING, "lowerdir+", modpath.c_str(), 0) <
         0) {
       std::cout << "Failed to add VFS lowerdir: " << fsfd << std::endl;
       exit(EXIT_FAILURE);
     }
   }
-  if (fsconfig(fsfd, FSCONFIG_SET_STRING, "lowerdir+", filesys.gameroot.c_str(),
+  if (fsconfig(fsfd, FSCONFIG_SET_STRING, "lowerdir+", this->gameroot.c_str(),
                0) < 0) {
     std::cout << "Failed to set VFS lowerdir: " << fsfd << std::endl;
     exit(EXIT_FAILURE);
   }
-  if (fsconfig(fsfd, FSCONFIG_SET_STRING, "upperdir", filesys.overwrite.c_str(),
+  if (fsconfig(fsfd, FSCONFIG_SET_STRING, "upperdir", this->overwrite.c_str(),
                0) < 0) {
     std::cout << "Failed to set VFS upperdir: " << fsfd << std::endl;
     exit(EXIT_FAILURE);
   }
-  if (fsconfig(fsfd, FSCONFIG_SET_STRING, "workdir", filesys.work.c_str(), 0) <
+  if (fsconfig(fsfd, FSCONFIG_SET_STRING, "workdir", this->work.c_str(), 0) <
       0) {
     std::cout << "Failed to set VFS workdir: " << fsfd << std::endl;
     exit(EXIT_FAILURE);
@@ -57,6 +57,6 @@ void mount_vfs(VFS filesys) {
     std::cout << "Failed to mount VFS: " << mntfd << std::endl;
     exit(EXIT_FAILURE);
   }
-  move_mount(mntfd, "", AT_FDCWD, filesys.gameroot.c_str(),
+  move_mount(mntfd, "", AT_FDCWD, this->gameroot.c_str(),
              MOVE_MOUNT_F_EMPTY_PATH);
 }

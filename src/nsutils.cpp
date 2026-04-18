@@ -1,5 +1,5 @@
-#include <helpers.h>
-void update_map(const char *mapping, const char *map_file) {
+#include <nsutils.h>
+void NSUtils::update_map(const char *mapping, const char *map_file) {
   int fd = open(map_file, O_WRONLY);
   if (fd < 0) {
     perror("open map file");
@@ -12,7 +12,7 @@ void update_map(const char *mapping, const char *map_file) {
   close(fd);
 }
 
-void create_namespace() {
+void NSUtils::create_namespace() {
     uid_t uid = getuid();
     gid_t gid = getgid();
     if (unshare(CLONE_NEWNS | CLONE_NEWUSER) != 0) {
