@@ -7,3 +7,5 @@ struct VFS {
   std::string overwrite;
   std::string work;
 };
+
+void mount_vfs(VFS filesys);
