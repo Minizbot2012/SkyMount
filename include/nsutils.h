@@ -10,4 +10,4 @@
 namespace NSUtils {
 void update_map(const char *mapping, const char *map_file);
 void create_namespace();
-}
+} // namespace NSUtils

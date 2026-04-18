@@ -1,10 +1,6 @@
 #include <nsutils.h>
 #include <vfs.h>
 #include <rfl/json/load.hpp>
-#include <sys/mount.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <ranges>
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     std::cout << "Usage: " << argv[0] << " <VFS JSON file>" << std::endl;
